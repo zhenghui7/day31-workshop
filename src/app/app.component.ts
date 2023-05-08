@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CartAction, CartItem } from './models';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,32 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'day31-workshop';
+
+  cart: CartItem[] = []
+
+  process(action: CartAction) {
+    let i = this.cart.find(cItem => cItem.item == action.item)
+    // Add
+    if (action.quantity > 0) {
+      if (!i) {
+        /*
+          let newItem: CartItem = { ...action }
+          { item: action.item, quantity: action.quantity }
+        */
+        this.cart.push({ ...action} as CartItem)
+      } else {
+        i.quantity += action.quantity
+      }
+    }
+
+    if (action.quantity < 0) {
+      if (!i || i.quantity == 0) {
+
+      } else {
+        i.quantity += action.quantity
+      }
+    }
+    console.info('cart: ', this.cart)
+
+  }
 }
